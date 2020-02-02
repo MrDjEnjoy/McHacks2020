@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ public class Catalog extends AppCompatActivity {
 
     private Merchant currMerchant;
     private LinearLayout lin;
+    private Button aItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,14 @@ public class Catalog extends AppCompatActivity {
         Intent i = getIntent();
         currMerchant = (Merchant) i.getSerializableExtra("merchant2");
         lin = findViewById(R.id.linlayout);
+        aItem = findViewById(R.id.addItem);
+
+        aItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addItem();
+            }
+        });
         loadCatalog();
     }
 
@@ -46,5 +57,12 @@ public class Catalog extends AppCompatActivity {
             tempLayout.addView(tempTags);
             lin.addView(tempLayout);
         }
+    }
+
+    private void addItem()
+    {
+        Intent intent = new Intent(getApplicationContext(), AddItem.class);
+        intent.putExtra("currmerchant", currMerchant);
+        startActivity(intent);
     }
 }

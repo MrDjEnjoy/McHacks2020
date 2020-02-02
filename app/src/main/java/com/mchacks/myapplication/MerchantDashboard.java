@@ -43,7 +43,7 @@ public class MerchantDashboard extends AppCompatActivity {
 
     private void toCatalog()
     {
-        Intent intent = new Intent(this, SignUp.class);
+        Intent intent = new Intent(this, Catalog.class);
         intent.putExtra("merchant2", currMerchant);
         startActivity(intent);
     }
