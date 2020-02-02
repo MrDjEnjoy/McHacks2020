@@ -4,13 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -25,6 +34,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+//    public void getSellersLocation(){
+////        JsonObjectRequest MyStringRequest = new JsonObjectRequest(
+////                Request.Method.GET,
+////                getString(R.string.basic_url) + "/api/sellers",
+////                new Response.Listener<JSONObject>() {
+////
+////
+////                    @Override
+////                    public void onResponse(JSONObject response) {
+////                        try {
+////                            Toast confirmation = Toast.makeText(getApplicationContext(), response.get("message").toString(), Toast.LENGTH_SHORT);
+////                            confirmation.show();
+////                        } catch (JSONException e) {
+////                            e.printStackTrace();
+////                        }
+////                    }
+////                }, new Response.ErrorListener() {
+////
+////            @Override
+////            public void onErrorResponse(VolleyError error) {
+////                // TODO: Handle error
+////
+////            }
+////        });
+////        MyRequestQueue.add(MyStringRequest);
+////    }
 
 
     /**
@@ -41,8 +77,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng marcheJeanTalon = new LatLng(45.5361095, -73.6170789);
+        mMap.addMarker(new MarkerOptions().position(marcheJeanTalon).title("Marker in Marche Jean Talon"));
+
+        LatLng marcheAtwater = new LatLng(45.4794197, -73.5852317);
+        mMap.addMarker(new MarkerOptions().position(marcheAtwater).title("Marker in Marche Atwater"));
+
+        LatLng marcheConcordia = new LatLng(45.4953688, -73.5867511);
+        mMap.addMarker(new MarkerOptions().position(marcheConcordia).title("Marker in Marche Concordia"));
+
+        LatLng trottier = new LatLng(45.5074102, -73.5811839);
+        mMap.addMarker(new MarkerOptions().position(trottier).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title("You are here"));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(trottier));
     }
 }

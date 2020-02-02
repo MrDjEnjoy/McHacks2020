@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <permission
+        android:name="com.mchacks.myapplication.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
