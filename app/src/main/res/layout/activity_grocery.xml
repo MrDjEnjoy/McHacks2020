@@ -12,21 +12,12 @@
         android:id="@+id/shop_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
         android:text="SHOP"
-        app:layout_constraintBottom_toTopOf="@+id/linear_message_list" />
-
-    <android.widget.LinearLayout
-        android:id="@+id/linear_message_list"
-        android:layout_width="401dp"
-        android:layout_height="5dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_button"
-        app:layout_constraintVertical_bias="1.0">
-
-    </android.widget.LinearLayout>
+        app:layout_constraintBottom_toTopOf="@+id/grocery_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/layout_chatbox"
@@ -64,5 +55,20 @@
             android:textSize="14dp" />
 
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/grocery_list"
+        android:layout_width="409dp"
+        android:layout_height="625dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shop_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

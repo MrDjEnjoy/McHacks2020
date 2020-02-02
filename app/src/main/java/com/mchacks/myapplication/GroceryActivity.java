@@ -1,6 +1,8 @@
 package com.mchacks.myapplication;
 
+import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -22,9 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,13 +38,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class GroceryActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private RequestQueue MyRequestQueue;
     private ArrayList<String> shoppingList;
-    private LinearLayout mLayout;
+    private ArrayAdapter<String> mAdapter;
+    private ListView listView;
     private EditText mEditText;
     private Button mSaveButton;
     private Button mShopButton;
@@ -49,48 +55,48 @@ public class GroceryActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery);
-        shoppingList = new ArrayList<String>();
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        MyRequestQueue = Volley.newRequestQueue(this);
-        mLayout = (LinearLayout) findViewById(R.id.linear_message_list);
-        mEditText = (EditText) findViewById(R.id.edittext_grocery);
-        mSaveButton = (Button) findViewById(R.id.button_save);
-        mSaveButton.setOnClickListener(onClick());
-        mShopButton = (Button) findViewById(R.id.shop_button);
+
+        listView = findViewById(R.id.grocery_list);
+        mSaveButton = findViewById(R.id.button_save);
+        mShopButton = findViewById(R.id.shop_button);
+        mEditText = findViewById(R.id.edittext_grocery);
+
+        shoppingList = new ArrayList<>();
+        mAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                R.layout.grocery_item, R.id.task_title, shoppingList);
+        mSaveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String name = mEditText.getText().toString();
+                shoppingList.add(name);
+                listView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
         mShopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shop();
+                Intent intent = new Intent(GroceryActivity.this, MapsActivity.class);
+                startActivity(intent);
             }
         });
 //        TextView textView = new TextView(this);
     }
 
-    private View.OnClickListener onClick() {
-        return new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                shoppingList.add(mEditText.getText().toString());
-                mLayout.addView(createNewTextView(mEditText.getText().toString()));
-            }
-        };
-    }
-
-    private void shop(){
-        final double [] locationArr = new double[2];
+    private void shop() {
+        final double[] locationArr = new double[2];
         fusedLocationProviderClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
 
-                        if (location != null){
+                        if (location != null) {
                             locationArr[0] = location.getLongitude();
                             locationArr[1] = location.getLatitude();
-                        }
-                        else{
+                        } else {
                             try {
-                                Toast confirmation = Toast.makeText(getApplicationContext(),"Turn on Location on your device", Toast.LENGTH_SHORT);
+                                Toast confirmation = Toast.makeText(getApplicationContext(), "Turn on Location on your device", Toast.LENGTH_SHORT);
                                 confirmation.show();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -101,11 +107,11 @@ public class GroceryActivity extends AppCompatActivity {
 
         JSONArray jsonList = new JSONArray(shoppingList);
         JSONObject myJSON = new JSONObject();
-        try{
+        try {
             myJSON.put("tags", jsonList);
             myJSON.put("lon", locationArr[0]);
             myJSON.put("lat", locationArr[1]);
-        }catch(JSONException err){
+        } catch (JSONException err) {
             //TODO: Add an error
         }
         System.out.println(myJSON.toString());
@@ -115,16 +121,16 @@ public class GroceryActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
 
 
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    Toast confirmation = Toast.makeText(getApplicationContext(),response.get("message").toString(), Toast.LENGTH_SHORT);
-                    confirmation.show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Toast confirmation = Toast.makeText(getApplicationContext(), response.get("message").toString(), Toast.LENGTH_SHORT);
+                            confirmation.show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
