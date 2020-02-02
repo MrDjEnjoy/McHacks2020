@@ -23,7 +23,7 @@ public class FirstScreen extends AppCompatActivity {
         buyerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                toGroceryList();
             }
         });
 
@@ -37,6 +37,11 @@ public class FirstScreen extends AppCompatActivity {
 
     public void toLogIn(){
         Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
+
+    public void toGroceryList(){
+        Intent intent = new Intent(this, GroceryActivity.class);
         startActivity(intent);
     }
 }
