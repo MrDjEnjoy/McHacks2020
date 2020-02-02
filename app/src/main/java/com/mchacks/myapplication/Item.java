@@ -1,20 +1,25 @@
 package com.mchacks.myapplication;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
 * Basic Item class
 * */
-public class Item {
+public class Item implements Serializable {
     private String name;
     private ArrayList<String> tags;
-    private  double price;
+    private  String price;
+    private String id;
+    private String creator;
 
-    public Item(String name, ArrayList<String> tags, double price)
+    public Item(String name, ArrayList<String> tags, String price, String id, String creator)
     {
         this.setName(name);
         this.setTags(tags);
         this.setPrice(price);
+        this.id = id;
+        this.creator = creator;
     }
 
     public String getName() {
@@ -33,11 +38,27 @@ public class Item {
         this.tags = tags;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

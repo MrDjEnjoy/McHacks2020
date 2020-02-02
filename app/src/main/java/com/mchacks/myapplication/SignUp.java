@@ -2,8 +2,11 @@ package com.mchacks.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,15 +30,25 @@ public class SignUp extends AppCompatActivity {
     private EditText pw;
     private EditText name;
     private EditText address;
+
+    private Button signUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
-        email = findViewById(R.id.email);
-        pw = findViewById(R.id.password);
-        name = findViewById(R.id.email);
-        address = findViewById(R.id.email);
+        email = findViewById(R.id.suemail);
+        pw = findViewById(R.id.supw);
+        name = findViewById(R.id.subus);
+        address = findViewById(R.id.suaddress);
+        signUp = findViewById(R.id.signupbut);
         MyRequestQueue = Volley.newRequestQueue(this);
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signup();
+            }
+        });
     }
 
     RequestQueue MyRequestQueue;
@@ -54,8 +67,10 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    Toast confirmation = Toast.makeText(getApplicationContext(),response.get("message").toString(), Toast.LENGTH_SHORT);
-                    confirmation.show();
+                        Merchant temp = new Merchant(response.getString("name"),  response.getString("location"), response.getString("id"), response.getString("email"));
+                    Intent intent = new Intent(getApplicationContext(), MerchantDashboard.class);
+                    intent.putExtra("merchant", temp);
+                    startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
