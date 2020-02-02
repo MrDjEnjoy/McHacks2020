@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".GroceryActivity"></activity>
+        <activity android:name=".Catalog"></activity>
+        <activity android:name=".MerchantDashboard" />
         <activity android:name=".Login" />
         <activity android:name=".SignUp" />
         <activity android:name=".FirstScreen">

@@ -2,7 +2,6 @@ package com.mchacks.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +15,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Console;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +43,7 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.email);
         pw = findViewById(R.id.password);
         lIB = findViewById(R.id.login);
-        test = findViewById(R.id.editText4);
+        test = findViewById(R.id.suaddress);
         toSignUP = findViewById(R.id.toSignup);
 
         lIB.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +76,20 @@ public class Login extends AppCompatActivity {
                 try {
                     Toast confirmation = Toast.makeText(getApplicationContext(),response.get("message").toString(), Toast.LENGTH_SHORT);
                     confirmation.show();
+                    Merchant temp = new Merchant(response.getString("name"), response.getString("location"), response.getString("id"), response.getString("email"));
+                    ArrayList<Item> items = getItems(response.getJSONArray("catalog"));
+                    ArrayList<String> sustags = new ArrayList<>();
+                    JSONArray sustaglist = response.getJSONArray("sustain");
+                    for(int i = 0; i < sustaglist.length(); i++)
+                    {
+                        sustags.add(sustaglist.getString(i));
+                    }
+                    temp.setCatalog(items);
+                    temp.setDescription(response.getString("description"));
+                    temp.setSustainibility(sustags);
+                    Intent intent = new Intent(getApplicationContext(), MerchantDashboard.class);
+                    intent.putExtra("merchant", temp);
+                    startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -90,6 +103,39 @@ public class Login extends AppCompatActivity {
             }
         });
         MyRequestQueue.add(MyStringRequest);
+    }
+
+    public ArrayList<Item> getItems(JSONArray itemList) throws JSONException {
+        final ArrayList<Item> grocerList = new ArrayList<>();
+        for (int i = 0; i < itemList.length(); i++)
+        {
+            JsonObjectRequest MyStringRequest = new JsonObjectRequest(Request.Method.GET, getString(R.string.basic_url) + "/api/items/" + itemList.getString(i), new JSONObject(), new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        Toast confirmation = Toast.makeText(getApplicationContext(),response.get("message").toString(), Toast.LENGTH_SHORT);
+                        confirmation.show();
+                        ArrayList<String> tags = new ArrayList<>();
+                        JSONArray jTags = response.getJSONArray("tags");
+                        for(int j = 0; j < jTags.length(); j++) tags.add(jTags.getString(j));
+                        Item temp = new Item(response.getString("name"), tags, response.getString("price"), response.getString("_id"), response.getString("creator"));
+                        grocerList.add(temp);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // TODO: Handle error
+
+                }
+            });
+            MyRequestQueue.add(MyStringRequest);
+        }
+        return grocerList;
     }
 
     public void goToSignUp()
