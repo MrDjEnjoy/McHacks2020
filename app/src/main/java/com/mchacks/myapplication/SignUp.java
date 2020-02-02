@@ -33,8 +33,8 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.signup);
         email = findViewById(R.id.email);
         pw = findViewById(R.id.password);
-        name = findViewById(R.id.name);
-        address = findViewById(R.id.address);
+        name = findViewById(R.id.email);
+        address = findViewById(R.id.email);
         MyRequestQueue = Volley.newRequestQueue(this);
     }
 

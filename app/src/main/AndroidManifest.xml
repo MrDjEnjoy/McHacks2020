@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUp"></activity>
-        <activity android:name=".Login">
+        <activity android:name=".Login"></activity>
+        <activity android:name=".SignUp" />
+        <activity android:name=".FirstScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +24,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBnu6C33lH8cVL9-ZK2FsuIudtwfpYGZDc" />
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

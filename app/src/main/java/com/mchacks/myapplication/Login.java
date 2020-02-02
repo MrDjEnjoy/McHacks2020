@@ -3,6 +3,7 @@ package com.mchacks.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ public class Login extends AppCompatActivity {
     private EditText pw;
     private Button lIB;
     private TextView test;
+    private Button toSignUP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +45,20 @@ public class Login extends AppCompatActivity {
         pw = findViewById(R.id.password);
         lIB = findViewById(R.id.login);
         test = findViewById(R.id.editText4);
+        toSignUP = findViewById(R.id.toSignup);
 
         lIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 login();
+            }
+        });
+
+        toSignUP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSignUp();
             }
         });
     }
@@ -80,5 +90,11 @@ public class Login extends AppCompatActivity {
             }
         });
         MyRequestQueue.add(MyStringRequest);
+    }
+
+    public void goToSignUp()
+    {
+        Intent intent = new Intent(this, SignUp.class);
+        startActivity(intent);
     }
 }
